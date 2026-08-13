@@ -1,0 +1,21 @@
+name: "Copilot Setup Steps — Moramay Café"
+
+steps:
+  - name: Set up Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: "20"
+
+  - name: Install root dependencies (workspaces)
+    run: npm install
+
+  - name: Install frontend dependencies
+    run: npm install --workspace apps/web
+
+  - name: Install backend dependencies
+    run: npm install --workspace apps/api
+
+  - name: Copy environment templates
+    run: |
+      cp apps/web/.env.example apps/web/.env.local || true
+      cp apps/api/.env.example apps/api/.env || true
