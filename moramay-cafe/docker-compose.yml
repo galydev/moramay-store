@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: moramay-cafe-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: moramay
+      POSTGRES_PASSWORD: moramay
+      POSTGRES_DB: moramay_cafe
+    ports:
+      - "5432:5432"
+    volumes:
+      - moramay_cafe_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moramay -d moramay_cafe"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: moramay-cafe-api
+    restart: unless-stopped
+    env_file:
+      - ./apps/api/.env
+    environment:
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  moramay_cafe_db_data:
