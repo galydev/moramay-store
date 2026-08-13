@@ -1,0 +1,198 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Moramay Café API",
+    "version": "1.0.0",
+    "description": "API contract for Moramay Café e-commerce backend (NestJS). Feature 001-tienda-online."
+  },
+  "servers": [
+    { "url": "http://localhost:3001/api", "description": "Local development" }
+  ],
+  "tags": [
+    { "name": "catalog" },
+    { "name": "orders" },
+    { "name": "subscriptions" },
+    { "name": "customers" },
+    { "name": "admin" },
+    { "name": "auth" },
+    { "name": "payments" },
+    { "name": "shipping" }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": ["catalog"],
+        "summary": "Listar productos del catálogo (público)",
+        "parameters": [
+          { "name": "category", "in": "query", "schema": { "type": "string", "enum": ["coffee", "merch"] } }
+        ],
+        "responses": {
+          "200": { "description": "Lista de productos con sus variantes y stock_status" }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": ["catalog"],
+        "summary": "Detalle de producto (incluye trazabilidad)",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Detalle del producto" }, "404": { "description": "No encontrado" } }
+      }
+    },
+    "/shipping/rates": {
+      "get": {
+        "tags": ["shipping"],
+        "summary": "Consultar tarifa de envío por ciudad (público, para checkout)",
+        "parameters": [{ "name": "city", "in": "query", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Tarifa aplicable" } }
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": ["orders"],
+        "summary": "Crear pedido (compra como invitado o autenticado)",
+        "responses": {
+          "201": { "description": "Pedido creado en estado pending, con link de pago Wompi" },
+          "400": { "description": "Error de validación (ej. stock insuficiente)" }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Consultar detalle y estado de un pedido (requiere autenticación)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Detalle del pedido" }, "403": { "description": "No autorizado" } }
+      }
+    },
+    "/orders/{id}/return-request": {
+      "post": {
+        "tags": ["orders"],
+        "summary": "Iniciar solicitud de devolución/reclamación",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Solicitud creada" } }
+      }
+    },
+    "/customers/me": {
+      "get": {
+        "tags": ["customers"],
+        "summary": "Obtener perfil del cliente autenticado (datos, pedidos, suscripciones)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Perfil del cliente" } }
+      },
+      "patch": {
+        "tags": ["customers"],
+        "summary": "Actualizar información personal / facturación / envío",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Perfil actualizado" } }
+      }
+    },
+    "/subscriptions": {
+      "post": {
+        "tags": ["subscriptions"],
+        "summary": "Crear suscripción mensual",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Suscripción creada" } }
+      }
+    },
+    "/subscriptions/{id}": {
+      "patch": {
+        "tags": ["subscriptions"],
+        "summary": "Pausar, reanudar, modificar o cancelar suscripción",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Suscripción actualizada" } }
+      }
+    },
+    "/subscriptions/{id}/confirm-charge": {
+      "post": {
+        "tags": ["subscriptions"],
+        "summary": "Confirmar cobro manual del ciclo actual (modo manual_confirmation)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Cobro confirmado y procesado" } }
+      }
+    },
+    "/payments/webhook": {
+      "post": {
+        "tags": ["payments"],
+        "summary": "Webhook de Wompi para notificación de eventos de pago",
+        "responses": { "200": { "description": "Evento procesado" }, "401": { "description": "Firma inválida" } }
+      }
+    },
+    "/admin/products": {
+      "post": {
+        "tags": ["admin"],
+        "summary": "Crear producto (rol admin)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Producto creado" } }
+      }
+    },
+    "/admin/products/{id}": {
+      "patch": {
+        "tags": ["admin"],
+        "summary": "Editar/desactivar producto (rol admin)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Producto actualizado" } }
+      }
+    },
+    "/admin/orders": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Listar todos los pedidos (rol admin)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Lista de pedidos" } }
+      }
+    },
+    "/admin/orders/{id}/status": {
+      "patch": {
+        "tags": ["admin"],
+        "summary": "Actualizar estado de un pedido (rol admin)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Estado actualizado" } }
+      }
+    },
+    "/admin/customers": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Listar cuentas de clientes (rol admin)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Lista de clientes" } }
+      }
+    },
+    "/admin/subscriptions": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Listar suscripciones y su historial de cobros (rol admin)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Lista de suscripciones" } }
+      }
+    },
+    "/admin/invitations": {
+      "post": {
+        "tags": ["admin"],
+        "summary": "Invitar a un nuevo administrador (rol admin)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Invitación enviada" } }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Iniciar sesión (email/password vía Supabase Auth)",
+        "responses": { "200": { "description": "Sesión iniciada, retorna JWT" } }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Registrar nueva cuenta de cliente",
+        "responses": { "201": { "description": "Cuenta creada" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  }
+}
