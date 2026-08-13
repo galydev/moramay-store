@@ -1,0 +1,19 @@
+{
+  "name": "moramay-cafe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Moramay Café — monorepo (Next.js frontend + NestJS backend)",
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev:api": "npm run start:dev --workspace=apps/api",
+    "build:api": "npm run build --workspace=apps/api",
+    "test:api": "npm run test --workspace=apps/api",
+    "lint:api": "npm run lint --workspace=apps/api"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
