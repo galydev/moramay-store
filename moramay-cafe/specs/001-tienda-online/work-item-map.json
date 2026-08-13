@@ -1,0 +1,296 @@
+﻿{
+    "T-022":  {
+                  "issue":  16,
+                  "title":  "Endpoint POST /orders con soporte invitado",
+                  "phase":  "story:US-001",
+                  "url":  "https://github.com/galydev/moramay-store/issues/16",
+                  "story":  "US-001"
+              },
+    "T-093":  {
+                  "issue":  42,
+                  "title":  "Documentacion final (README, Swagger, guia de despliegue)",
+                  "phase":  "phase:polish",
+                  "url":  "https://github.com/galydev/moramay-store/issues/42",
+                  "story":  ""
+              },
+    "T-026":  {
+                  "issue":  20,
+                  "title":  "UI de checkout (carrito, ciudad, invitado o login, widget Wompi)",
+                  "phase":  "story:US-001",
+                  "url":  "https://github.com/galydev/moramay-store/issues/20",
+                  "story":  "US-001"
+              },
+    "T-040":  {
+                  "issue":  26,
+                  "title":  "Modulo subscriptions (CRUD, billing_mode, items)",
+                  "phase":  "story:US-002",
+                  "url":  "https://github.com/galydev/moramay-store/issues/26",
+                  "story":  "US-002"
+              },
+    "T-014":  {
+                  "issue":  13,
+                  "title":  "Estado de carrito en cliente (localStorage)",
+                  "phase":  "story:US-005",
+                  "url":  "https://github.com/galydev/moramay-store/issues/13",
+                  "story":  "US-005"
+              },
+    "T-092":  {
+                  "issue":  41,
+                  "title":  "Revision de seguridad (RBAC, firma de webhook, secretos)",
+                  "phase":  "phase:polish",
+                  "url":  "https://github.com/galydev/moramay-store/issues/41",
+                  "story":  ""
+              },
+    "T-032":  {
+                  "issue":  23,
+                  "title":  "Endpoint POST /orders/:id/return-request",
+                  "phase":  "story:US-003",
+                  "url":  "https://github.com/galydev/moramay-store/issues/23",
+                  "story":  "US-003"
+              },
+    "T-034":  {
+                  "issue":  25,
+                  "title":  "UI de login/registro (Supabase Auth)",
+                  "phase":  "story:US-003",
+                  "url":  "https://github.com/galydev/moramay-store/issues/25",
+                  "story":  "US-003"
+              },
+    "T-042":  {
+                  "issue":  28,
+                  "title":  "Tokenizacion de metodo de pago (Wompi Payment Source)",
+                  "phase":  "story:US-002",
+                  "url":  "https://github.com/galydev/moramay-store/issues/28",
+                  "story":  "US-002"
+              },
+    "T-056":  {
+                  "issue":  38,
+                  "title":  "UI del panel admin (dashboard, productos, pedidos, clientes, suscripciones, invitar admin)",
+                  "phase":  "story:US-004",
+                  "url":  "https://github.com/galydev/moramay-store/issues/38",
+                  "story":  "US-004"
+              },
+    "T-033":  {
+                  "issue":  24,
+                  "title":  "UI Mi cuenta (perfil, historial de pedidos, facturacion)",
+                  "phase":  "story:US-003",
+                  "url":  "https://github.com/galydev/moramay-store/issues/24",
+                  "story":  "US-003"
+              },
+    "T-010":  {
+                  "issue":  9,
+                  "title":  "Modulo catalog (products, product_variants) en NestJS",
+                  "phase":  "story:US-005",
+                  "url":  "https://github.com/galydev/moramay-store/issues/9",
+                  "story":  "US-005"
+              },
+    "T-008":  {
+                  "issue":  8,
+                  "title":  "Plantilla de variables de entorno",
+                  "phase":  "phase:foundation",
+                  "url":  "https://github.com/galydev/moramay-store/issues/8",
+                  "story":  ""
+              },
+    "T-003":  {
+                  "issue":  3,
+                  "title":  "Scaffold del backend NestJS",
+                  "phase":  "phase:foundation",
+                  "url":  "https://github.com/galydev/moramay-store/issues/3",
+                  "story":  ""
+              },
+    "T-053":  {
+                  "issue":  35,
+                  "title":  "Endpoint de listado de clientes (admin)",
+                  "phase":  "story:US-004",
+                  "url":  "https://github.com/galydev/moramay-store/issues/35",
+                  "story":  "US-004"
+              },
+    "T-043":  {
+                  "issue":  29,
+                  "title":  "Cron job mensual de facturacion (@nestjs/schedule)",
+                  "phase":  "story:US-002",
+                  "url":  "https://github.com/galydev/moramay-store/issues/29",
+                  "story":  "US-002"
+              },
+    "T-005":  {
+                  "issue":  5,
+                  "title":  "Integrar Supabase Auth en NestJS (guards JWT, roles)",
+                  "phase":  "phase:foundation",
+                  "url":  "https://github.com/galydev/moramay-store/issues/5",
+                  "story":  ""
+              },
+    "T-091":  {
+                  "issue":  40,
+                  "title":  "Pruebas de rendimiento vs criterios de exito",
+                  "phase":  "phase:polish",
+                  "url":  "https://github.com/galydev/moramay-store/issues/40",
+                  "story":  ""
+              },
+    "T-055":  {
+                  "issue":  37,
+                  "title":  "Endpoint de invitacion de administradores mas email Resend",
+                  "phase":  "story:US-004",
+                  "url":  "https://github.com/galydev/moramay-store/issues/37",
+                  "story":  "US-004"
+              },
+    "T-090":  {
+                  "issue":  39,
+                  "title":  "Pruebas E2E (Playwright) para flujo de compra completo y suscripcion",
+                  "phase":  "phase:polish",
+                  "url":  "https://github.com/galydev/moramay-store/issues/39",
+                  "story":  ""
+              },
+    "T-044":  {
+                  "issue":  30,
+                  "title":  "Flujo de confirmacion manual (email y confirm-charge)",
+                  "phase":  "story:US-002",
+                  "url":  "https://github.com/galydev/moramay-store/issues/30",
+                  "story":  "US-002"
+              },
+    "T-001":  {
+                  "issue":  1,
+                  "title":  "Inicializar estructura del monorepo (apps/web, apps/api)",
+                  "phase":  "phase:foundation",
+                  "url":  "https://github.com/galydev/moramay-store/issues/1",
+                  "story":  ""
+              },
+    "T-030":  {
+                  "issue":  21,
+                  "title":  "Modulo customers (perfil get/update)",
+                  "phase":  "story:US-003",
+                  "url":  "https://github.com/galydev/moramay-store/issues/21",
+                  "story":  "US-003"
+              },
+    "T-002":  {
+                  "issue":  2,
+                  "title":  "Scaffold del frontend Next.js 14 con shadcn/ui y Tailwind",
+                  "phase":  "phase:foundation",
+                  "url":  "https://github.com/galydev/moramay-store/issues/2",
+                  "story":  ""
+              },
+    "T-020":  {
+                  "issue":  14,
+                  "title":  "Modulo shipping (CRUD shipping_rates y calculo por ciudad)",
+                  "phase":  "story:US-001",
+                  "url":  "https://github.com/galydev/moramay-store/issues/14",
+                  "story":  "US-001"
+              },
+    "T-013":  {
+                  "issue":  12,
+                  "title":  "Componentes de listado/detalle de producto con trazabilidad",
+                  "phase":  "story:US-005",
+                  "url":  "https://github.com/galydev/moramay-store/issues/12",
+                  "story":  "US-005"
+              },
+    "T-045":  {
+                  "issue":  31,
+                  "title":  "UI de gestion de suscripciones en Mi cuenta",
+                  "phase":  "story:US-002",
+                  "url":  "https://github.com/galydev/moramay-store/issues/31",
+                  "story":  "US-002"
+              },
+    "T-052":  {
+                  "issue":  34,
+                  "title":  "Endpoints de listado y cambio de estado de pedidos (admin)",
+                  "phase":  "story:US-004",
+                  "url":  "https://github.com/galydev/moramay-store/issues/34",
+                  "story":  "US-004"
+              },
+    "T-023":  {
+                  "issue":  17,
+                  "title":  "Integracion de pagos Wompi (widget y webhook)",
+                  "phase":  "story:US-001",
+                  "url":  "https://github.com/galydev/moramay-store/issues/17",
+                  "story":  "US-001"
+              },
+    "T-054":  {
+                  "issue":  36,
+                  "title":  "Endpoint de listado de suscripciones (admin)",
+                  "phase":  "story:US-004",
+                  "url":  "https://github.com/galydev/moramay-store/issues/36",
+                  "story":  "US-004"
+              },
+    "T-025":  {
+                  "issue":  19,
+                  "title":  "Email de confirmacion de pedido via Resend",
+                  "phase":  "story:US-001",
+                  "url":  "https://github.com/galydev/moramay-store/issues/19",
+                  "story":  "US-001"
+              },
+    "T-031":  {
+                  "issue":  22,
+                  "title":  "Endpoints GET/PATCH /customers/me",
+                  "phase":  "story:US-003",
+                  "url":  "https://github.com/galydev/moramay-store/issues/22",
+                  "story":  "US-003"
+              },
+    "T-021":  {
+                  "issue":  15,
+                  "title":  "Modulo orders (crear pedido, order_items)",
+                  "phase":  "story:US-001",
+                  "url":  "https://github.com/galydev/moramay-store/issues/15",
+                  "story":  "US-001"
+              },
+    "T-011":  {
+                  "issue":  10,
+                  "title":  "Endpoints GET /products, GET /products/:id",
+                  "phase":  "story:US-005",
+                  "url":  "https://github.com/galydev/moramay-store/issues/10",
+                  "story":  "US-005"
+              },
+    "T-012":  {
+                  "issue":  11,
+                  "title":  "Layout de paginas publicas (Home, Tienda, Merch, Nosotros, Contacto)",
+                  "phase":  "story:US-005",
+                  "url":  "https://github.com/galydev/moramay-store/issues/11",
+                  "story":  "US-005"
+              },
+    "T-041":  {
+                  "issue":  27,
+                  "title":  "Endpoints POST /subscriptions, PATCH /subscriptions/:id",
+                  "phase":  "story:US-002",
+                  "url":  "https://github.com/galydev/moramay-store/issues/27",
+                  "story":  "US-002"
+              },
+    "T-004":  {
+                  "issue":  4,
+                  "title":  "Crear esquema Supabase y migraciones",
+                  "phase":  "phase:foundation",
+                  "url":  "https://github.com/galydev/moramay-store/issues/4",
+                  "story":  ""
+              },
+    "T-050":  {
+                  "issue":  32,
+                  "title":  "Guard de rol admin en NestJS",
+                  "phase":  "story:US-004",
+                  "url":  "https://github.com/galydev/moramay-store/issues/32",
+                  "story":  "US-004"
+              },
+    "T-024":  {
+                  "issue":  18,
+                  "title":  "Creacion automatica de cuenta al confirmar pago de invitado",
+                  "phase":  "story:US-001",
+                  "url":  "https://github.com/galydev/moramay-store/issues/18",
+                  "story":  "US-001"
+              },
+    "T-051":  {
+                  "issue":  33,
+                  "title":  "Endpoints CRUD de productos (admin)",
+                  "phase":  "story:US-004",
+                  "url":  "https://github.com/galydev/moramay-store/issues/33",
+                  "story":  "US-004"
+              },
+    "T-007":  {
+                  "issue":  7,
+                  "title":  "Configurar esqueleto de CI/CD con GitHub Actions",
+                  "phase":  "phase:foundation",
+                  "url":  "https://github.com/galydev/moramay-store/issues/7",
+                  "story":  ""
+              },
+    "T-006":  {
+                  "issue":  6,
+                  "title":  "Configurar Docker (Dockerfile.web, Dockerfile.api, docker-compose.yml)",
+                  "phase":  "phase:foundation",
+                  "url":  "https://github.com/galydev/moramay-store/issues/6",
+                  "story":  ""
+              }
+}
