@@ -1,43 +1,84 @@
-# ISSUE_COMMENTS.md — Borradores de comentarios de avance (#26–#31)
+# Progress comments to paste on each GitHub issue
 
-> El usuario debe pegar manualmente estos comentarios en cada issue desde la UI
-> de GitHub (la sesión del agente no tiene permisos de escritura en el repo).
+Paste the corresponding block as a comment on each issue. All work is implemented on branch
+`jhonatan-galeano-ghtcorp-admin-backend-panel` (commits `73f5cdc`, `8a225f2`), based on
+`jhonatan-galeano-ghtcorp-supreme-fortnight`.
 
-## #26 — T-040: Módulo subscriptions (CRUD, billing_mode, items)
-Implementado en la rama `jhonatan-galeano-ghtcorp-backend-subscriptions-wompi`:
-módulo `apps/api/src/subscriptions/` (service + DTOs + interfaces), usando
-`SupabaseService.getClient()` (sin SQL crudo). Soporta `billing_mode`
-`automatic`/`manual_confirmation`. Tests unitarios en
-`subscriptions.service.spec.ts` (creación, ownership, not found).
+---
 
-## #27 — T-041: Endpoints POST /subscriptions, PATCH /subscriptions/:id
-Implementado: `SubscriptionsController` con `POST /subscriptions`,
-`PATCH /subscriptions/:id` (status/billingMode/paymentSourceReference),
-`GET /subscriptions/me`, protegidos con `JwtAuthGuard` + verificación de
-ownership.
+## Issue #32 — T-050: Guard de rol admin
 
-## #28 — T-042: Tokenización de método de pago (Wompi Payment Source)
-Implementado: módulo `apps/api/src/payments/` con `WompiService`
-(`createPaymentSource` / `chargeWithSource`) usando `fetch` nativo. Endpoint
-`PATCH /subscriptions/:id/payment-source` para tokenizar/reemplazar el método
-de pago recurrente.
+✅ Done.
 
-## #29 — T-043: Cron job mensual de facturación (@nestjs/schedule)
-Implementado: `BillingCronService` (`@nestjs/schedule`,
-`@Cron(EVERY_DAY_AT_3AM)`) revisa `next_billing_date <= hoy` y ramifica por
-`billing_mode` (cobro automático vía Wompi o solicitud de confirmación
-manual). Los fallos por suscripción se aíslan para no bloquear el resto del
-batch. Tests en `billing-cron.service.spec.ts`.
+Added an `AdminOnly()` composite decorator (`apps/api/src/admin/decorators/admin-auth.decorator.ts`) that applies `JwtAuthGuard` + `RolesGuard` + `@Roles('admin')` together. Applied to every controller under `/admin/*` (`products`, `orders`, `customers`, `subscriptions`, and the admin-only `POST /admin/invitations` route).
 
-## #30 — T-044: Flujo de confirmación manual (email + POST /subscriptions/:id/confirm-charge)
-Implementado: módulo `apps/api/src/notifications/` (`EmailService` vía Resend)
-+ `POST /subscriptions/:id/confirm-charge` que procesa el cobro tras
-confirmación del cliente y registra el resultado en
-`subscription_billing_history`.
+- Requests without a valid Supabase JWT get `401 Unauthorized`.
+- Authenticated requests from a non-admin (`customer`) role get `403 Forbidden`.
+- Only users present in the `admins` table with `status = 'active'` are treated as admin (resolved in the existing `JwtAuthGuard.resolveRole`).
 
-## #31 — T-045: UI de gestión de suscripciones en "Mi cuenta"
-Sin UI implementada aquí (fuera de alcance de este backend), pero los
-endpoints y contratos DTO quedan estables para que el frontend de
-"Mi cuenta > Suscripciones" los consuma: `POST /subscriptions`,
-`PATCH /subscriptions/:id`, `PATCH /subscriptions/:id/payment-source`,
-`POST /subscriptions/:id/confirm-charge`, `GET /subscriptions/me`.
+Covered by `apps/api/src/admin/admin-guard.spec.ts` (4 tests: rejects customer, allows admin, allows any authenticated user when no roles required, confirms `ROLES_KEY` metadata lookup).
+
+---
+
+## Issue #33 — T-051: Endpoints CRUD de productos (admin)
+
+✅ Done.
+
+Added `apps/api/src/admin/products.controller.ts` / `products.service.ts`:
+- `GET /admin/products` — list all products with their variants.
+- `POST /admin/products` — create a product with one or more variants in a single call.
+- `PATCH /admin/products/:id` — edit product fields (name, description, origin, roast date, lot number, base price, status).
+- `PATCH /admin/products/:id/deactivate` — soft-delete (`status = 'inactive'`); products are never hard-deleted.
+- `PATCH /admin/products/variants/:variantId` — edit a variant's price, stock, weight/grind or attribute label.
+
+DTOs (`dto/create-product.dto.ts`, `update-product.dto.ts`, `update-product-variant.dto.ts`) validate every field with `class-validator`.
+
+Covered by `apps/api/src/admin/products.service.spec.ts` (lists products mapping variants correctly, throws `NotFoundException` for a missing product).
+
+---
+
+## Issue #34 — T-052: Endpoints de listado y cambio de estado de pedidos (admin)
+
+✅ Done.
+
+Added `apps/api/src/admin/orders.controller.ts` / `orders.service.ts`:
+- `GET /admin/orders` — list all orders (with their items), optional `?status=` query filter.
+- `PATCH /admin/orders/:id/status` — transition an order's status (`pending`/`paid`/`shipped`/`delivered`/`cancelled`), validated via `UpdateOrderStatusDto`.
+
+Covered by `apps/api/src/admin/orders.service.spec.ts` (lists orders with mapped items, throws `NotFoundException` when the order doesn't exist).
+
+---
+
+## Issue #35 — T-053: Endpoint de listado de clientes (admin)
+
+✅ Done.
+
+Added `apps/api/src/admin/customers.controller.ts` / `customers.service.ts`:
+- `GET /admin/customers` — lists every customer account (basic info: name, email, phone, city, how the account was created) together with their full order history (id, status, total, date).
+
+Covered by `apps/api/src/admin/customers.service.spec.ts`.
+
+---
+
+## Issue #36 — T-054: Endpoint de listado de suscripciones (admin)
+
+✅ Done.
+
+Added `apps/api/src/admin/subscriptions.controller.ts` / `subscriptions.service.ts`:
+- `GET /admin/subscriptions` — lists every subscription (status, billing mode, next billing date) with its full billing history (billed date, amount, result, payment reference).
+
+Covered by `apps/api/src/admin/subscriptions.service.spec.ts`.
+
+---
+
+## Issue #37 — T-055: Endpoint de invitación de administradores + email Resend
+
+✅ Done.
+
+Added `apps/api/src/admin/invitations.controller.ts` / `invitations.service.ts` and `apps/api/src/admin/email/resend-email.service.ts`:
+- `POST /admin/invitations` (admin-only) — validates the email isn't already an admin, creates a Supabase Auth user via `auth.admin.generateLink({ type: 'invite', ... })`, inserts the `admins` row with `status = 'invited'`, and sends an invitation email through Resend with an accept-invitation link.
+- `POST /admin/invitations/accept` (public — the invitee has no session yet) — receives `adminId` + a chosen `password`, sets the Supabase Auth user's password via `auth.admin.updateUserById`, and flips `admins.status` to `'active'`.
+
+`RESEND_API_KEY` / `RESEND_FROM_EMAIL` / `WEB_APP_URL` are read from the existing `.env` config (already present in `.env.example`).
+
+Covered by `apps/api/src/admin/invitations.service.spec.ts` (4 tests: successful invite + email sent, rejects duplicate email with `ConflictException`, successful accept + role activation, throws `NotFoundException` for an unknown invitation).
