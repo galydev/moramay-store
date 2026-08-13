@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { createHash } from 'crypto';
 import {
   ChargeWithSourceParams,
   CreatePaymentSourceParams,
@@ -7,12 +8,43 @@ import {
   WompiTransaction,
 } from './interfaces/wompi.interface';
 
+export interface WompiTransactionRequest {
+  orderId: string;
+  amountInCents: number;
+  customerEmail: string;
+  reference: string;
+}
+
+export interface WompiWidgetData {
+  publicKey: string;
+  currency: string;
+  amountInCents: number;
+  reference: string;
+  signatureIntegrity: string;
+  redirectUrl?: string;
+}
+
+interface WompiEventPayload {
+  event: string;
+  data: {
+    transaction: {
+      id: string;
+      status: 'APPROVED' | 'DECLINED' | 'VOIDED' | 'ERROR' | 'PENDING';
+      reference: string;
+      amount_in_cents: number;
+    };
+  };
+  signature: {
+    checksum: string;
+    properties: string[];
+  };
+  timestamp: number;
+}
+
 /**
  * Thin client for the Wompi Payments API (https://docs.wompi.co).
- * Handles Payment Source tokenization (reusable token for recurring
- * subscription charges) and charging an existing Payment Source.
- *
- * Uses the global `fetch` (Node 18+ runtime) to avoid extra dependencies.
+ * Handles widget signatures, webhook verification, payment source
+ * tokenization and recurring charges.
  */
 @Injectable()
 export class WompiService {
@@ -36,8 +68,53 @@ export class WompiService {
   }
 
   /**
-   * Creates a reusable Wompi Payment Source from a client-side payment
-   * token, returning the source id used for future recurring charges.
+   * Builds the widget signature needed by the frontend to open the Wompi
+   * checkout widget.
+   */
+  buildWidgetData(request: WompiTransactionRequest): WompiWidgetData {
+    try {
+      const integritySecret = this.configService.get<string>('WOMPI_EVENTS_SECRET') ?? '';
+
+      const signatureIntegrity = createHash('sha256')
+        .update(`${request.reference}${request.amountInCents}COP${integritySecret}`)
+        .digest('hex');
+
+      return {
+        publicKey: this.publicKey,
+        currency: 'COP',
+        amountInCents: request.amountInCents,
+        reference: request.reference,
+        signatureIntegrity,
+      };
+    } catch (error) {
+      this.logger.error(error, `Failed to build Wompi widget data for order ${request.orderId}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Verifies the checksum sent by Wompi in the webhook payload.
+   */
+  verifyWebhookSignature(payload: WompiEventPayload): boolean {
+    try {
+      const eventsSecret = this.configService.get<string>('WOMPI_EVENTS_SECRET') ?? '';
+      const concatenatedValues = payload.signature.properties
+        .map((propertyPath) => this.readProperty(payload.data, propertyPath))
+        .join('');
+
+      const expectedChecksum = createHash('sha256')
+        .update(`${concatenatedValues}${payload.timestamp}${eventsSecret}`)
+        .digest('hex');
+
+      return expectedChecksum.toLowerCase() === payload.signature.checksum.toLowerCase();
+    } catch (error) {
+      this.logger.error(error, 'Failed to verify Wompi webhook signature');
+      throw error;
+    }
+  }
+
+  /**
+   * Creates a reusable Wompi Payment Source from a client-side payment token.
    */
   async createPaymentSource(params: CreatePaymentSourceParams): Promise<WompiPaymentSource> {
     try {
@@ -62,7 +139,7 @@ export class WompiService {
 
       if (!response.ok || !payload.data) {
         throw new HttpException(
-          `Wompi rechazó la tokenización del método de pago: ${payload.error?.reason ?? 'motivo desconocido'}`,
+          `Wompi rejected payment source tokenization: ${payload.error?.reason ?? 'unknown reason'}`,
           HttpStatus.BAD_GATEWAY,
         );
       }
@@ -70,7 +147,7 @@ export class WompiService {
       return payload.data;
     } catch (error) {
       this.logger.error(
-        `Fallo al crear payment source en Wompi para ${params.customerEmail}`,
+        `Failed to create Wompi payment source for ${params.customerEmail}`,
         error instanceof Error ? error.stack : undefined,
       );
       throw error;
@@ -78,8 +155,7 @@ export class WompiService {
   }
 
   /**
-   * Charges a previously tokenized Payment Source (recurring subscription
-   * billing). Returns the resulting Wompi transaction.
+   * Charges a previously tokenized Payment Source (recurring subscription billing).
    */
   async chargeWithSource(params: ChargeWithSourceParams): Promise<WompiTransaction> {
     try {
@@ -105,7 +181,7 @@ export class WompiService {
 
       if (!response.ok || !payload.data) {
         throw new HttpException(
-          `Wompi rechazó el cobro: ${payload.error?.reason ?? 'motivo desconocido'}`,
+          `Wompi rejected charge: ${payload.error?.reason ?? 'unknown reason'}`,
           HttpStatus.BAD_GATEWAY,
         );
       }
@@ -113,10 +189,21 @@ export class WompiService {
       return payload.data;
     } catch (error) {
       this.logger.error(
-        `Fallo al cobrar payment source ${params.paymentSourceId} (ref ${params.reference})`,
+        `Failed to charge payment source ${params.paymentSourceId} (ref ${params.reference})`,
         error instanceof Error ? error.stack : undefined,
       );
       throw error;
     }
   }
+
+  private readProperty(data: WompiEventPayload['data'], propertyPath: string): string {
+    const segments = propertyPath.split('.');
+    let current: unknown = data;
+    for (const segment of segments) {
+      current = (current as Record<string, unknown>)?.[segment];
+    }
+    return String(current ?? '');
+  }
 }
+
+export type { WompiEventPayload };

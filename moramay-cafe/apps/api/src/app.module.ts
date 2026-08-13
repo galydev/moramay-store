@@ -5,6 +5,11 @@ import { LoggerModule } from 'nestjs-pino';
 import { loggerConfig } from './common/logging/logger.config';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
+import { ShippingModule } from './shipping/shipping.module';
+import { OrdersModule } from './orders/orders.module';
+import { PaymentsModule } from './payments/payments.module';
+import { CustomersModule } from './customers/customers.module';
+import { NotificationsModule } from './notifications/notifications.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 
 @Module({
@@ -14,6 +19,11 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
     ScheduleModule.forRoot(),
     AuthModule,
     HealthModule,
+    ShippingModule,
+    CustomersModule,
+    OrdersModule,
+    PaymentsModule,
+    NotificationsModule,
     SubscriptionsModule,
   ],
 })
