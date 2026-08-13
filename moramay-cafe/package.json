@@ -1,0 +1,17 @@
+{
+  "name": "moramay-cafe",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Moramay Café online store monorepo (T-001: workspaces root).",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace apps/web",
+    "build:web": "npm run build --workspace apps/web",
+    "lint:web": "npm run lint --workspace apps/web"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
