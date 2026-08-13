@@ -6,6 +6,11 @@ import { OrdersModule } from '../orders/orders.module';
 import { CustomersModule } from '../customers/customers.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 
+/**
+ * Encapsulates Wompi payments integration: widget signatures, webhook
+ * verification, payment source tokenization and recurring charges.
+ * Exported for consumption by the orders and subscriptions modules.
+ */
 @Module({
   imports: [OrdersModule, CustomersModule, NotificationsModule],
   controllers: [PaymentsController],
