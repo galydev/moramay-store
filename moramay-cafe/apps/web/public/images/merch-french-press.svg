@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <rect width="600" height="600" fill="#dfe9e6"/>
+  <rect x="220" y="160" width="160" height="260" rx="16" fill="#3a5a54"/>
+  <text x="300" y="470" font-family="sans-serif" font-size="26" fill="#2a3a34" text-anchor="middle">Prensa Francesa</text>
+</svg>
