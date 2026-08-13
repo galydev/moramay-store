@@ -129,18 +129,18 @@ Priority: Must Have
 
 ## Phase 5: User Story US-004 — Panel de administración
 Priority: Must Have
-- [ ] T-050: Guard de rol admin en NestJS [Dep: T-005] [Story: US-004]
+- [x] T-050: Guard de rol admin en NestJS [Dep: T-005] [Story: US-004]
   - Files: `apps/api/src/admin/admin.guard.ts`
   - Acceptance: rechaza acceso a rutas /admin sin rol admin
-- [ ] T-051: Endpoints CRUD de productos (admin) [Dep: T-050, T-010] [P] [Story: US-004]
+- [x] T-051: Endpoints CRUD de productos (admin) [Dep: T-050, T-010] [P] [Story: US-004]
   - Files: `apps/api/src/admin/products.controller.ts`
-- [ ] T-052: Endpoints de listado y cambio de estado de pedidos (admin) [Dep: T-050, T-021] [P] [Story: US-004]
+- [x] T-052: Endpoints de listado y cambio de estado de pedidos (admin) [Dep: T-050, T-021] [P] [Story: US-004]
   - Files: `apps/api/src/admin/orders.controller.ts`
-- [ ] T-053: Endpoint de listado de clientes (admin) [Dep: T-050, T-030] [P] [Story: US-004]
+- [x] T-053: Endpoint de listado de clientes (admin) [Dep: T-050, T-030] [P] [Story: US-004]
   - Files: `apps/api/src/admin/customers.controller.ts`
-- [ ] T-054: Endpoint de listado de suscripciones (admin) [Dep: T-050, T-040] [P] [Story: US-004]
+- [x] T-054: Endpoint de listado de suscripciones (admin) [Dep: T-050, T-040] [P] [Story: US-004]
   - Files: `apps/api/src/admin/subscriptions.controller.ts`
-- [ ] T-055: Endpoint de invitación de administradores + email Resend [Dep: T-050] [P] [Story: US-004]
+- [x] T-055: Endpoint de invitación de administradores + email Resend [Dep: T-050] [P] [Story: US-004]
   - Files: `apps/api/src/admin/invitations.controller.ts`
 - [ ] T-056: UI del panel admin (dashboard, productos, pedidos, clientes, suscripciones, invitar admin) [Dep: T-051, T-052, T-053, T-054, T-055] [Story: US-004]
   - Files: `apps/web/app/admin/`

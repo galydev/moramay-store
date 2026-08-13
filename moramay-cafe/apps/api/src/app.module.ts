@@ -5,6 +5,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { loggerConfig } from './common/logging/logger.config';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
     ScheduleModule.forRoot(),
     AuthModule,
     HealthModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
